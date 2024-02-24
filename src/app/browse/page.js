@@ -2,7 +2,7 @@
 import Header from "../components/Header";
 import { signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
-import { useRouter } from "next/Navigation";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
     const router=useRouter()
