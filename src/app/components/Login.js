@@ -1,89 +1,97 @@
-"use client"
-
-import Header from './Header'
-import { createUserWithEmailAndPassword , signInWithEmailAndPassword } from "firebase/auth";
-import Link from 'next/link'
-import { FormDataValidate } from '../utils/validate'
-import { useEffect, useRef, useState } from 'react'
+import Header from './Header';
+import Link from 'next/link'; // Ensure Link is used if necessary, or remove this import if not.
+import { FormDataValidate } from '../utils/validate';
+import { useState, useEffect } from 'react';
 import { auth } from '../utils/firebase';
-import { useRouter } from 'next/Navigation';
-
-
-
-
+import { useRouter } from 'next/navigation'; // Corrected from 'next/Navigation' to 'next/router'
+import { onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { useDispatch } from 'react-redux'; // Removed unused 'UseDispatch'
+import { adduser, removeuser } from '../utils/userslice';
+import { bg } from './Constant';
 
 const Login = () => {
-  const email =useRef("");
-  const password = useRef("")
-  const [Error,SetError]=useState("")
-  const [isSignIn,SetisSignIn]=useState(true)
-  const name=useRef("")
-  const router=useRouter()
-  
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
+  const [isSignIn, setIsSignIn] = useState(true);
+  const router = useRouter();
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const { uid, email, displayName } = user;
+        dispatch(adduser({
+          uid,
+          email,
+          displayName,
+        }));
+        router.push("/browse");
+      } else {
+        dispatch(removeuser());
+        router.push("/");
+      }
+    });
+    return () => unsubscribe();
+  }, [dispatch, router]);
 
- 
-
-  const handleclick=()=>{
-    console.log(email.current.value)
-    console.log(password.current.value)
-
-    const message=FormDataValidate(email.current.value,password.current.value)
-    SetError(message)
-
-
-    if (message) return
-      
-if(!isSignIn){
-
-createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
-  .then((userCredential) => {
-    // Signed up 
-    const user = userCredential.user;
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    SetError(errorCode + "-"+errorMessage)
-    // ..
-  });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(""); // Reset error message
+    const message = FormDataValidate(email, password);
+    if (message) {
+      setError(message);
+      return;
     }
 
-    if(isSignIn){
-
-signInWithEmailAndPassword(auth, email.current.value, password.current.value)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
-    router.push("/browse")
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    SetError(errorCode + "-"+errorMessage)
-  });
+    try {
+      if (!isSignIn) {
+        const { user } = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(user, {
+          displayName: name, 
+          photoURL: "https://example.com/profile.jpg",
+        });
+      } else {
+        await signInWithEmailAndPassword(auth, email, password);
+      }
+      router.push("/browse");
+    } catch (error) {
+      setError(error.code + "-" + error.message);
     }
-  }
-
-  const toggleSignIn=()=>{
-    SetisSignIn(!isSignIn)
-  }
+  };
 
   return (
-    <div><Header></Header><img src="https://assets.nflxext.com/ffe/siteui/vlv3/5e16108c-fd30-46de-9bb8-0b4e1bbbc509/29d8d7d7-83cc-4b5f-aa9b-6fd4f68bfaa6/IN-en-20240205-popsignuptwoweeks-perspective_alpha_website_large.jpg" alt="" />
-    <form action="" onSubmit={(e)=>{e.preventDefault()}} className='absolute left-0 right-0 w-3/12 p-12 m-2 mx-auto text-white bg-black top-32 bg-opacity-80'>
-    <h1 className='px-2 pb-4 mx-2 text-4xl'>{isSignIn? "Sign In" :"Sign Up"}</h1>
-    {!isSignIn && <input type="text" placeholder='Full Name' className='h-10 p-4 m-4 w-[15rem] bg-zinc-600' ref={name}/>}
-    
-        <input type="text" placeholder='Email' className='h-10 p-4 m-4 w-[15rem] bg-zinc-600' ref={email}/>
-        <input type="password" placeholder='Password' className='h-10 p-4 m-4 w-[15rem] bg-zinc-600' ref={password}/> <br />
-        <button className="w-[15rem] h-12 p-4 m-4 bg-red-600 rounded-sm" onClick={handleclick}> Submit</button>
-        <p className='px-2 m-2 font-semibold text-red-600'>{Error}</p>
-        <p className='pt-3 m-4 cursor-pointer text-zinc-400' onClick={toggleSignIn}>{isSignIn? "New to Netflix?  Sign Up" :"Already Registered? Sign In"}</p>
-    </form></div>
-  )
+    <div>
+      <Header /><img src={bg} alt="" />
+      <form onSubmit={handleSubmit} className='absolute left-0 right-0 w-3/12 p-12 m-2 mx-auto text-white bg-black top-32 bg-opacity-80'>
+        <h1 className='px-2 pb-4 mx-2 text-4xl'>{isSignIn ? "Sign In" : "Sign Up"}</h1>
+        {!isSignIn && (
+          <input type="text" placeholder='Full Name' className='h-10 p-4 m-4 w-[15rem] bg-zinc-600'
+                 value={name} onChange={(e) => setName(e.target.value)} />
+        )}
+        <input
+          type="text"
+          placeholder="Email"
+          className="h-10 p-4 m-4 w-[15rem] bg-zinc-600"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder='Password'
+          className='h-10 p-4 m-4 w-[15rem] bg-zinc-600'
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button type="submit" className="w-[15rem] h-12 p-4 m-4 bg-red-600 rounded-sm">Submit</button>
+        <p className='px-2 m-2 font-semibold text-red-600'>{error}</p>
+        <p className='pt-3 m-4 cursor-pointer text-zinc-400' onClick={() => setIsSignIn(!isSignIn)}>
+          {isSignIn ? "New to Netflix? Sign Up" : "Already Registered? Sign In"}
+        </p>
+      </form>
+    </div>
+  );
 }
 
-export default Login
+export default Login;
