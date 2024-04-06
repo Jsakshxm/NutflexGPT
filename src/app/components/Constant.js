@@ -10,3 +10,5 @@ export const options = {
     }
   };
 export const URL_Movies_NP="https://api.themoviedb.org/3/movie/now_playing?page=1"
+
+export const IMG_URL ="https://image.tmdb.org/t/p/w500"
