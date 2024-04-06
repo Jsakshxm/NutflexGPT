@@ -11,4 +11,8 @@ export const options = {
   };
 export const URL_Movies_NP="https://api.themoviedb.org/3/movie/now_playing?page=1"
 
-export const IMG_URL ="https://image.tmdb.org/t/p/w500"
+export const IMG_URL ="https://image.tmdb.org/t/p/w780"
+
+export const URL_TopRated='https://api.themoviedb.org/3/movie/top_rated?page=1'
+
+export const URL_Popular = "https://api.themoviedb.org/3/movie/popular?language=IN&page=1"

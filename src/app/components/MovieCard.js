@@ -3,8 +3,8 @@ import { IMG_URL } from './Constant';
 
 const MovieCard = ({ poster }) => {
   return (
-    <div className='flex flex-wrap p-1'>
-      <img src={IMG_URL + poster} className="object-cover w-72" alt="Movie Poster" />
+    <div className="pr-4 w-36 md:w-48">
+      <img src={IMG_URL + poster} className=" w-[500px] " alt="Movie Poster" />
     </div>
   );
 };

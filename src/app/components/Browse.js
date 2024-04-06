@@ -5,12 +5,16 @@ import { useRouter } from 'next/navigation'; // Import router from next/router
 
 import Header from '../components/Header';
 import useNowPlayingMovies from '../utils/useNowPlayingMovies';
+import useTopRated from '../utils/useTopRated';
+import usePopularMovies from '../utils/usePopularMovies';
 
 const Browse = () => {
   const router = useRouter(); // Initialize router
 
   // Fetch now playing movies (assuming this hook is defined correctly)
   useNowPlayingMovies();
+  useTopRated();
+  usePopularMovies();
 
   const handleSignOut = () => {
     signOut(auth)
