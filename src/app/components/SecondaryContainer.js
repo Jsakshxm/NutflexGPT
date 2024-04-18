@@ -8,12 +8,13 @@ export const SecondaryContainer = () => {
   const TopRated = useSelector(state => state.movies.topRatedMovies)
   const Popular = useSelector(state => state.movies.popularMovies)
   return (
-    <div><MovieList title={"Now Playing"} movies={NowPlaying} />
+    <div className='bg-black '>
+    <div className='-mt-48 '><MovieList title={"Now Playing"} movies={NowPlaying} />
 
     <MovieList title={"Top Rated"} movies={TopRated} />
     <MovieList title={"Popular Movies"} movies={Popular} />
 
 
-    </div>
+    </div> /</div>
   )
 }
