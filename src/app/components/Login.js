@@ -63,9 +63,9 @@ const Login = () => {
 
   return (
     <div>
-      <Header /><img src={bg} alt="" />
-      <form onSubmit={handleSubmit} className='absolute left-0 right-0 w-3/12 p-12 m-2 mx-auto text-white bg-black top-32 bg-opacity-80'>
-        <h1 className='px-2 pb-4 mx-2 text-4xl'>{isSignIn ? "Sign In" : "Sign Up"}</h1>
+      <Header /><img src={bg} alt="" className='object-cover w-screen h-screen' />
+      <form onSubmit={handleSubmit} className='absolute left-0 right-0 w-full p-12 m-2 mx-auto text-white bg-black md:w-3/12 top-32 bg-opacity-80'>
+        <h1 className='px-2 pb-4 mx-3 text-4xl md:mx-0'>{isSignIn ? "Sign In" : "Sign Up"}</h1>
         {!isSignIn && (
           <input type="text" placeholder='Full Name' className='h-10 p-4 m-4 w-[15rem] bg-zinc-600'
                  value={name} onChange={(e) => setName(e.target.value)} />

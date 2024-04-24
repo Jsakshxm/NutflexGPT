@@ -14,7 +14,7 @@ const GptSearch = () => {
       <img src={bg} alt="" className="fixed inset-0 object-cover h-full bg-repeat-y -z-10 opacity-95 md:h-auto" />
 
       {/* Black Gradient Background */}
-      <div className="fixed inset-0 z-0 " />
+      <div className="absolute z-20 bg-gradient-to-b from-black to-transparent " />
 
       {/* Content */}
       <div className="absolute inset-0 z-10 flex flex-col items-center justify-center">

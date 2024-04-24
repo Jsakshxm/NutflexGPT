@@ -63,7 +63,7 @@ const Browse = () => {
           <img
             src="https://wallpapers.com/images/hd/netflix-profile-pictures-1000-x-1000-qo9h82134t9nv0j0.jpg"
             alt="Sign Out"
-            className="w-12 h-12 rounded-sm"
+            className="hidden w-12 h-12 rounded-sm md:inline-block"
           />
           <button className="px-2 py-2 font-semibold text-white bg-red-500" onClick={handleSignOut}>
             Sign Out

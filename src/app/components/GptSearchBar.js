@@ -56,7 +56,7 @@ const GptSearchBar = () => {
   };
 
   return (
-    <div className='m-8 text-white bg-black'>
+    <div className='m-8 text-white bg-black '>
       <form onSubmit={handleSubmit} className='grid grid-cols-12'>
         <input
           type='text'
