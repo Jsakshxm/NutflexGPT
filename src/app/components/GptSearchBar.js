@@ -56,17 +56,17 @@ const GptSearchBar = () => {
   };
 
   return (
-    <div className=' text-white bg-black'>
+    <div className='m-8 text-white bg-black'>
       <form onSubmit={handleSubmit} className='grid grid-cols-12'>
         <input
           type='text'
-          className='col-span-9 px-4 py-3 m-4 text-black focus:outline-orange-500'
+          className='col-span-8 px-4 py-3 m-4 text-black md:col-span-9 focus:outline-orange-500'
           onFocus={clearFocus}
           placeholder={lang[CurrentLang].GptSearchPlaceholder}
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
         />
-        <button type='submit' className='col-span-3 m-4 bg-red-600 rounded-md'>
+        <button type='submit' className='col-span-4 m-4 bg-red-600 rounded-md md:col-span-3'>
           {lang[CurrentLang].search}
         </button>
       </form>

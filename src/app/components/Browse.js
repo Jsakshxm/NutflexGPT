@@ -51,7 +51,7 @@ const Browse = () => {
       
 
         <Header />
-        <div className="z-30 flex items-center justify-end p-4 py-6 space-x-4">
+        <div className="z-30 flex items-center justify-center p-4 py-6 pt-24 space-x-4 md:justify-end md:pt-4">
           <button className='px-2 py-3 text-white bg-orange-500 rounded-md text-md' onClick={handleGptToggle}>
             {showGpt ? "GPT Search"  :  "Browse Movies"}
           </button>
