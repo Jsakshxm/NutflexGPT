@@ -1,7 +1,6 @@
 import { useEffect } from "react"
-import { useDispatch } from "react-redux"
-import { signOut } from "firebase/auth"
-import { auth } from "./firebase"
+import { useDispatch, useSelector } from "react-redux"
+import { UseSelector } from "react-redux"
 import { useRouter } from "next/navigation"
 import { addNowPlayingMovies } from "./movieSlice"
 import { URL_Movies_NP } from "../components/Constant"
@@ -12,6 +11,7 @@ import { options } from "../components/Constant"
 
 
 const useNowPlayingMovies = () => {
+  const NowPlayingMovies = useSelector(store=>store.movies.nowPlayingMovies)
     const dispatch=useDispatch()
     const router=useRouter()
     
@@ -23,7 +23,7 @@ const useNowPlayingMovies = () => {
     dispatch(addNowPlayingMovies(json.results))
   }
 useEffect(()=>{
-   getMovies()
+  if(!NowPlayingMovies) getMovies()
 },[])
 }
 
